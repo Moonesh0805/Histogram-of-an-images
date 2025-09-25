@@ -1,4 +1,4 @@
-# Ex 03: Histogram-of-an-images
+# Histogram-of-an-images
 ## Aim
 To obtain a histogram for finding the frequency of pixels in an Image with pixel values ranging from 0 to 255. Also write the code using OpenCV to perform histogram equalization.
 
@@ -29,88 +29,83 @@ The Histogram of gray scale image and color image is shown.
 # Developed By: MOONESH P
 # Register Number: 212223230126
 
+#import the libraries 
 import cv2
-import numpy as np
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 
-# Read the image in grayscale format.
-img = cv2.imread('Chennai_Central.jpg', cv2.IMREAD_GRAYSCALE)
+# Load the color image
+image = cv2.imread(r"C:\Users\admin\Downloads\painting.jpeg")
 
-# Display the images.
-plt.imshow(img, cmap='gray')
-plt.title('Original Image')
-plt.show()
-
-# Display the images
-plt.hist(img.ravel(),256,range = [0, 256]);
-plt.title('Original Image')
-plt.show()
-
-img_eq = cv2.equalizeHist(img)
-
-# Display the images.
-plt.hist(img_eq.ravel(), 256, range = [0, 256])
-plt.title('Equalized Histogram')
-
-# Display the images.
-plt.imshow(img_eq, cmap='gray')
-plt.title('Original Image')
-plt.show()
-
-# Read the color image.
-img = cv2.imread('parrot.jpg', cv2.IMREAD_COLOR)
-
-import cv2
-
-img = cv2.imread('Chennai_Central.jpg')  # make sure extension is correct
-
-if img is None:
-    print("Image not loaded. Check path or filename.")
+# Check if the image was loaded successfully
+if image is None:
+    print("Error: Image not found or path is incorrect.")
 else:
-    img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    print("Converted to HSV successfully.")
+    # Convert the image to grayscale
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-# Convert to HSV.
-img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    # Display the grayscale image
+    plt.figure(figsize=(6, 6))
+    plt.imshow(gray_image, cmap='gray')
+    plt.title('Original Grayscale Image')
+    plt.axis('off')
+    plt.show()
 
-# Perform histogram equalization only on the V channel, for value intensity.
-img_hsv[:,:,2] = cv2.equalizeHist(img_hsv[:, :, 2])
+# Calculate histogram for the original grayscale image
+hist_original = cv2.calcHist([gray_image], [0], None, [256], [0, 256])
 
-# Convert back to BGR format.
-img_eq = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
-plt.imshow(img_eq[:,:,::-1]); plt.title('Equalized Image');plt.show()
+# Plot the histogram
+plt.figure(figsize=(6, 4))
+plt.plot(hist_original, color='black')
+plt.title('Original Histogram')
+plt.xlabel('Pixel Intensity')
+plt.ylabel('Frequency')
+plt.xlim([0, 256])
+plt.grid(True)
+plt.show()
 
-plt.hist(img_eq.ravel(),256,range = [0, 256]); plt.title('Histogram Equalized');plt.show()
+# Apply histogram equalization
+equalized_image = cv2.equalizeHist(gray_image)
 
-# Display the images.
-#plt.figure(figsize = (20,10))
-plt.subplot(221); plt.imshow(img[:, :, ::-1]); plt.title('Original Color Image')
-plt.subplot(222); plt.imshow(img_eq[:, :, ::-1]); plt.title('Equalized Image')
-plt.subplot(223); plt.hist(img.ravel(),256,range = [0, 256]); plt.title('Original Image')
-plt.subplot(224); plt.hist(img_eq.ravel(),256,range = [0, 256]); plt.title('Histogram Equalized');plt.show()
+# Display the equalized grayscale image
+plt.figure(figsize=(6, 6))
+plt.imshow(equalized_image, cmap='gray')  # corrected colormap spelling
+plt.title('Equalized Image')
+plt.axis('off')
+plt.show()
 
-# Display the histograms.
-plt.figure(figsize = [15,4])
-plt.subplot(121); plt.hist(img.ravel(),256,range = [0, 256]); plt.title('Original Image')
-plt.subplot(122); plt.hist(img_eq.ravel(),256,range = [0, 256]); plt.title('Histogram Equalized')
+# Calculate histogram for the equalized image
+hist_equalized = cv2.calcHist([equalized_image], [0], None, [256], [0, 256])
+
+# Plot the histogram
+plt.figure(figsize=(6, 4))
+plt.plot(hist_equalized, color='black')
+plt.title('Equalized Histogram')
+plt.xlabel('Pixel Intensity')
+plt.ylabel('Frequency')
+plt.xlim([0, 256])
+plt.grid(True)
+plt.show()
+
 ```
-
 ## Output:
-<img width="765" height="515" alt="image" src="https://github.com/user-attachments/assets/e03c4e6b-c893-4ef0-838c-221b9bd1f74d" />
+### Original gray scale image 
 
-<img width="757" height="567" alt="image" src="https://github.com/user-attachments/assets/21f57b4f-f682-43b8-97db-16e0036da7f1" />
+![Screenshot 2025-04-23 081101](https://github.com/user-attachments/assets/76d69183-7f3a-401d-9b3b-6b85bbe054de)
 
-<img width="821" height="543" alt="image" src="https://github.com/user-attachments/assets/ee929fe6-f4d2-4167-8312-32487aba51b1" />
 
-<img width="834" height="526" alt="image" src="https://github.com/user-attachments/assets/1561e255-2052-48f3-8df5-601fe49f2a6a" />
+### Original Histogram 
 
-<img width="742" height="502" alt="image" src="https://github.com/user-attachments/assets/accb40ea-4a79-4b59-ad54-e2bd91ad7677" />
+![Screenshot 2025-04-23 081108](https://github.com/user-attachments/assets/ab37703b-bc4c-42e7-9734-a186d687ccd2)
 
-<img width="786" height="552" alt="image" src="https://github.com/user-attachments/assets/3f02b3a5-1537-4415-ae14-5d98b98c538b" />
 
-<img width="801" height="549" alt="image" src="https://github.com/user-attachments/assets/0cc9bf8b-aa7d-40af-8b71-c364674d311c" />
+### Equalization Image.
 
-<img width="1371" height="449" alt="image" src="https://github.com/user-attachments/assets/53629410-91b5-4366-ae0b-c31348848d92" />
+![Screenshot 2025-04-23 081114](https://github.com/user-attachments/assets/0757df3a-6431-4501-86a6-2559b27afd2c)
+
+
+### Equalized Histogram
+
+![Screenshot 2025-04-23 081120](https://github.com/user-attachments/assets/e7c5d1bf-a515-4609-9fbc-d7ab216749d4)
 
 
 ## Result: 
